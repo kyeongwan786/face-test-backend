@@ -3,6 +3,7 @@ package com.kwr.spring.facetestbackend2.controllers;
 import com.kwr.spring.facetestbackend2.services.CountService;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "https://facealchemy.site")
 @RestController
 @RequestMapping("/api/visitor")
 public class CountController {
