@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CountService {
+
     private final CountMapper countMapper;
 
     public CountService(CountMapper countMapper) {
@@ -13,12 +14,17 @@ public class CountService {
     }
 
     @Transactional
-    public long increaseAndGetCount() {
-        countMapper.incrementCount();
-        return countMapper.getCount();
+    public void incrementToday() {
+        countMapper.updateTodayIfExists();
+        countMapper.insertTodayIfNotExists();  // 업데이트 안 됐으면 삽입
+        countMapper.incrementTotal();
     }
 
-    public long getCurrentCount() {
-        return countMapper.getCount();
+    public long getTodayCount() {
+        return countMapper.getTodayCount();
+    }
+
+    public long getTotalCount() {
+        return countMapper.getTotalCount();
     }
 }
