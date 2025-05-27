@@ -16,15 +16,17 @@ public class CountService {
     @Transactional
     public void incrementToday() {
         countMapper.updateTodayIfExists();
-        countMapper.insertTodayIfNotExists();  // 업데이트 안 됐으면 삽입
+        countMapper.insertTodayIfNotExists();  // 없으면 새로 삽입
         countMapper.incrementTotal();
     }
 
     public long getTodayCount() {
-        return countMapper.getTodayCount();
+        Long count = countMapper.getTodayCount();
+        return count != null ? count : 0;  // null 방지 처리
     }
 
     public long getTotalCount() {
-        return countMapper.getTotalCount();
+        Long count = countMapper.getTotalCount();
+        return count != null ? count : 0;  // null 방지 처리
     }
 }

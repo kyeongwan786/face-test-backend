@@ -7,6 +7,6 @@ public interface CountMapper {
     void updateTodayIfExists();
     void insertTodayIfNotExists();
     void incrementTotal();
-    long getTodayCount();
-    long getTotalCount();
+    Long getTodayCount();  // ✅ long → Long
+    Long getTotalCount();
 }
