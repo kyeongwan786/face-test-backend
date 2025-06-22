@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin(origins = {"https://facealchemy.site", "http://localhost:3000"})
+@CrossOrigin(origins = {"https://facealchemy.site"})
 public class CommentController {
 
     @Autowired
