@@ -1,7 +1,9 @@
 package com.kwr.spring.facetestbackend2.services;
 
+import com.kwr.spring.facetestbackend2.dto.CommentDto;
 import com.kwr.spring.facetestbackend2.entities.CommentEntity;
 import com.kwr.spring.facetestbackend2.mappers.CommentMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,44 +11,38 @@ import java.util.List;
 
 @Service
 public class CommentService {
-    private final CommentMapper commentMapper;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public CommentService(CommentMapper commentMapper) {
-        this.commentMapper = commentMapper;
-    }
+    @Autowired
+    private CommentMapper commentMapper;
 
-    public List<CommentEntity> getByPageType(String pageType) {
-        return commentMapper.getByPageType(pageType);
-    }
-
-    public void create(String pageType, String nickname, String password, String content) {
-        String hash = encoder.encode(password);
-        CommentEntity comment = CommentEntity.builder()
-                .pageType(pageType)
-                .nickname(nickname)
-                .passwordHash(hash)
-                .content(content)
-                .build();
+    public void addComment(CommentDto dto) {
+        CommentEntity comment = new CommentEntity();
+        comment.setPostId(dto.getPostId());
+        comment.setNickname(dto.getNickname());
+        comment.setPassword(dto.getPassword());
+        comment.setContent(dto.getContent());
         commentMapper.insert(comment);
     }
 
-    public boolean update(Long id, String rawPassword, String newContent) {
-        List<CommentEntity> all = commentMapper.getByPageType("dummy"); // 전체 조회 안 해도 되지만 간단한 방법
-        for (CommentEntity c : all) {
-            if (c.getId().equals(id) && encoder.matches(rawPassword, c.getPasswordHash())) {
-                return commentMapper.updateContent(id, newContent, c.getPasswordHash()) > 0;
-            }
+    public List<CommentEntity> getComments(Long postId) {
+        return commentMapper.selectByPostId(postId);
+    }
+
+    public boolean updateComment(Long id, String password, String newContent) {
+        CommentEntity comment = commentMapper.selectById(id);
+        if (comment != null && comment.getPassword().equals(password)) {
+            comment.setContent(newContent);
+            commentMapper.update(comment);
+            return true;
         }
         return false;
     }
 
-    public boolean delete(Long id, String rawPassword) {
-        List<CommentEntity> all = commentMapper.getByPageType("dummy");
-        for (CommentEntity c : all) {
-            if (c.getId().equals(id) && encoder.matches(rawPassword, c.getPasswordHash())) {
-                return commentMapper.softDelete(id, c.getPasswordHash()) > 0;
-            }
+    public boolean deleteComment(Long id, String password) {
+        CommentEntity comment = commentMapper.selectById(id);
+        if (comment != null && comment.getPassword().equals(password)) {
+            commentMapper.delete(id);
+            return true;
         }
         return false;
     }

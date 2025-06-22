@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentEntity {
     private Long id;
-    private String pageType;
+    private Long postId;
     private String nickname;
-    private String passwordHash;
+    private String password;
     private String content;
     private LocalDateTime createdAt;
-    private Boolean deleted;
+    private LocalDateTime updatedAt;
 }

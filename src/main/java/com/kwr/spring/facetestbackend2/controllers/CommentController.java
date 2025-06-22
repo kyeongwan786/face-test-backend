@@ -1,7 +1,9 @@
 package com.kwr.spring.facetestbackend2.controllers;
 
+import com.kwr.spring.facetestbackend2.dto.CommentDto;
 import com.kwr.spring.facetestbackend2.entities.CommentEntity;
 import com.kwr.spring.facetestbackend2.services.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,44 +12,32 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin(origins = "https://facealchemy.site")
+@CrossOrigin(origins = {"https://facealchemy.site", "http://localhost:3000"})
 public class CommentController {
 
-    private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
-    @GetMapping
-    public List<CommentEntity> getComments(@RequestParam String type) {
-        return commentService.getByPageType(type);
-    }
+    @Autowired
+    private CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Map<String, String> payload) {
-        try {
-            commentService.create(
-                    payload.get("pageType"),
-                    payload.get("nickname"),
-                    payload.get("password"),
-                    payload.get("content")
-            );
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("작성 실패");
-        }
+    public void addComment(@RequestBody CommentDto dto) {
+        commentService.addComment(dto);
+    }
+
+    @GetMapping("/{postId}")
+    public List<CommentEntity> getComments(@PathVariable Long postId) {
+        return commentService.getComments(postId);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, String> payload) {
-        boolean result = commentService.update(id, payload.get("password"), payload.get("content"));
-        return result ? ResponseEntity.ok().build() : ResponseEntity.status(403).body("비밀번호 불일치");
+    public boolean updateComment(@PathVariable Long id,
+                                 @RequestParam String password,
+                                 @RequestParam String content) {
+        return commentService.updateComment(id, password, content);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, @RequestBody Map<String, String> payload) {
-        boolean result = commentService.delete(id, payload.get("password"));
-        return result ? ResponseEntity.ok().build() : ResponseEntity.status(403).body("비밀번호 불일치");
+    public boolean deleteComment(@PathVariable Long id,
+                                 @RequestParam String password) {
+        return commentService.deleteComment(id, password);
     }
 }
