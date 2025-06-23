@@ -9,14 +9,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 @Configuration
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> {}) // ✅ 반드시 먼저 cors() 활성화
-                .csrf(csrf -> csrf.disable()) // ❗️Spring Security 6 기준
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {}) // CORS 설정 연결
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/comments/**").permitAll()
-                        .anyRequest().permitAll() // 필요시 제한
+                        .anyRequest().permitAll()
                 );
         return http.build();
     }
 }
+
