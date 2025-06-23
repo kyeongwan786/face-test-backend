@@ -6,13 +6,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**") // 특정 경로만 허용
+        registry.addMapping("/api/**")
                 .allowedOrigins("https://facealchemy.site")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowCredentials(true)
-                .maxAge(3600);
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
