@@ -1,3 +1,4 @@
+// 📁 com.kwr.spring.facetestbackend2.config.WebConfig
 package com.kwr.spring.facetestbackend2.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://facealchemy.site")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowCredentials(false);
     }
 }
