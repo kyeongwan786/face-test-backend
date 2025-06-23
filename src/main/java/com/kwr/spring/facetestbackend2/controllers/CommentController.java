@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/comments")
-@CrossOrigin(origins = {"https://facealchemy.site"})
+@CrossOrigin(origins = "https://facealchemy.site") // React 프론트엔드 CORS 허용
 public class CommentController {
 
     @Autowired
