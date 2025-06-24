@@ -3,14 +3,13 @@ package com.kwr.spring.facetestbackend2.controllers;
 import com.kwr.spring.facetestbackend2.services.VisitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@Controller
+@RestController
+@RequestMapping("/api/comments")
+@CrossOrigin(origins = "https://facealchemy.site")
 public class VisitorController {
     @RestController
     @RequestMapping("/api/visitor")
