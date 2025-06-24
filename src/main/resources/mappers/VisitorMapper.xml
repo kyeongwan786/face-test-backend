@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kwr.spring.facetestbackend2.mappers.VisitorMapper">
+    <insert id="insertVisit">
+        INSERT INTO visitor_log () VALUES ();
+    </insert>
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM visitor_log
+
+    </select>
+    <select id="countToday" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM visitor_log
+        WHERE DATE(visitied_at) = CURDATE();
+    </select>
+    <select id="countDaily" resultType="java.util.Map">
+        SELECT
+            TO_CHAR(visitied_at, 'YYYY-MM-DD') AS visit_date,
+            COUNT(*) AS visit_count
+        FROM visitor_log
+        GROUP BY visit_date
+        ORDER BY visit_date DESC
+        LIMIT 7
+    </select>
+</mapper>

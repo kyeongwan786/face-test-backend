@@ -1,16 +1,15 @@
 package com.kwr.spring.facetestbackend2.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
 public class CommentEntity {
     private Long id;
     private Long postId;
@@ -19,4 +18,5 @@ public class CommentEntity {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Boolean deleted;
 }
